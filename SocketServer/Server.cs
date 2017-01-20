@@ -12,17 +12,19 @@ namespace SocketServer
     {
         public IPAddress LocalIP { get; set; }
         public TcpListener Listener { get; set; }
+        public const int PORT = 16969;
 
         public Server()
         {
+
             LocalIP = IPAddress.Any;
-            Listener = new TcpListener(LocalIP, 16969);
+            Listener = new TcpListener(LocalIP, PORT);
         }
 
         public void startListening()
         {            
             Listener.Start();
-            Console.WriteLine("Starting Listener...");
+            Console.WriteLine("Starting Listener on port " + PORT + "...");
 
             while (true)
             {
@@ -35,7 +37,6 @@ namespace SocketServer
                 stream.Flush();
 
                 Console.WriteLine(receivedMsg);
-
                 byte[] outgoingData = Encoding.ASCII.GetBytes("you said: " + receivedMsg);
                 int bytesToSend = outgoingData.Length;
                 stream.Write(outgoingData, 0, bytesToSend);
